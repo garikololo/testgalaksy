@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendDriverRemoveEmail;
 use App\Models\Driver;
 use Illuminate\Http\Request;
 
@@ -49,7 +50,7 @@ class DriverController extends Controller
                     if (now()->diffInYears($value) > 65) {
                         $fail('Водій не може бути старше 65 років');
                     }
-                }
+                },
             ],
         ]);
 
@@ -104,7 +105,7 @@ class DriverController extends Controller
                     if (now()->diffInYears($value) > 65) {
                         $fail('Водій не може бути старше 65 років');
                     }
-                }
+                },
             ],
         ]);
 
@@ -126,6 +127,18 @@ class DriverController extends Controller
     {
         $driver->delete();
 
+        $driver->buses()->detach();
+
+        SendDriverRemoveEmail::dispatch($driver)
+            ->delay(now()->addHours(24));
+
         return back();
+    }
+
+    public function olds()
+    {
+        $drivers = Driver::onlyTrashed()->get();
+
+        return view('drivers.olds', compact('drivers'));
     }
 }

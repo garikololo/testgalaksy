@@ -21,10 +21,15 @@ Route::get('/', function () {
 Route::resource('brands', \App\Http\Controllers\BrandController::class);
 Route::resource('drivers', \App\Http\Controllers\DriverController::class);
 Route::resource('buses', \App\Http\Controllers\BusController::class);
+
 Route::post('/buses/{bus}/attach-driver', [\App\Http\Controllers\BusController::class, 'attachDriver'])
     ->name('buses.attachDriver');
+
 Route::delete('/buses/{bus}/detach-driver', [\App\Http\Controllers\BusController::class, 'detachDriver'])
     ->name('buses.detachDriver');
+
+Route::get('/drivers-olds', [\App\Http\Controllers\DriverController::class, 'olds'])
+    ->name('drivers.olds');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
