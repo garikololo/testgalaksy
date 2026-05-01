@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bus;
+use App\Models\Driver;
 use Illuminate\Http\Request;
 
 class BusController extends Controller
@@ -14,7 +15,7 @@ class BusController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

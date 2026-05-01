@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource('brands', \App\Http\Controllers\BrandController::class);
+Route::resource('drivers', \App\Http\Controllers\DriverController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

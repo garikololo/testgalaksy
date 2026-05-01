@@ -14,7 +14,9 @@ class DriverController extends Controller
      */
     public function index()
     {
-        //
+        $drivers = Driver::all();
+
+        return view('drivers.index', compact('drivers'));
     }
 
     /**
@@ -24,7 +26,7 @@ class DriverController extends Controller
      */
     public function create()
     {
-        //
+        return view('drivers.create');
     }
 
     /**
@@ -35,7 +37,28 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'salary' => 'required',
+            'birth_date' => [
+                'required',
+                'date',
+                function ($attr, $value, $fail) {
+                    if (now()->diffInYears($value) > 65) {
+                        $fail('Водій не може бути старше 65 років');
+                    }
+                }
+            ],
+        ]);
+
+        $data = $request->all();
+        $data['image'] = $request->image ?? [];
+
+        Driver::create($data);
+
+        return redirect()->route('drivers.index');
     }
 
     /**
@@ -57,7 +80,7 @@ class DriverController extends Controller
      */
     public function edit(Driver $driver)
     {
-        //
+        return view('drivers.edit', compact('driver'));
     }
 
     /**
@@ -69,7 +92,28 @@ class DriverController extends Controller
      */
     public function update(Request $request, Driver $driver)
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'salary' => 'required',
+            'birth_date' => [
+                'required',
+                'date',
+                function ($attr, $value, $fail) {
+                    if (now()->diffInYears($value) > 65) {
+                        $fail('Водій не може бути старше 65 років');
+                    }
+                }
+            ],
+        ]);
+
+        $data = $request->all();
+        $data['image'] = $request->image ?? [];
+
+        $driver->update($data);
+
+        return redirect()->route('drivers.index');
     }
 
     /**
@@ -80,6 +124,8 @@ class DriverController extends Controller
      */
     public function destroy(Driver $driver)
     {
-        //
+        $driver->delete();
+
+        return back();
     }
 }

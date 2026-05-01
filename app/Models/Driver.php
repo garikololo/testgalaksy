@@ -8,4 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Driver extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['first_name', 'last_name', 'birth_date', 'email', 'salary', 'image', 'deleted_at'];
+
+
+    protected $casts = [
+        'birth_date' => 'date',
+        'image' => 'array',
+    ];
+
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = mb_strtolower($value);
+    }
+
+    public function getFirstNameAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function getBirthDateAttribute($value)
+    {
+        return date('d.m.Y', strtotime($value));
+    }
 }
