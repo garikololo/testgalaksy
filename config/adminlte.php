@@ -328,6 +328,13 @@ return [
           //  'label_color' => 'success',
         ],
         [
+            'text' => 'автобуси',
+            'url' => 'buses',
+            'icon' => 'far fa-fw fa-file',
+//            'label' => 4,
+          //  'label_color' => 'success',
+        ],
+        [
             'text' => 'водії',
             'url' => 'drivers',
             'icon' => 'far fa-fw fa-file',

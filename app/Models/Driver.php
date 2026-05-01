@@ -31,4 +31,9 @@ class Driver extends Model
     {
         return date('d.m.Y', strtotime($value));
     }
+
+    public function buses()
+    {
+        return $this->belongsToMany(Bus::class, 'drivers_to_buses');
+    }
 }

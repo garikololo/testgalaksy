@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Drivers')
+@section('title', 'Водії')
 
 @section('content')
     <a href="{{ route('drivers.create') }}" class="btn btn-primary mb-2">Додати водія</a>

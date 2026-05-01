@@ -22,7 +22,7 @@ return new class extends Migration
 
         Schema::create('drivers_to_buses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('buse_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('bus_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('driver_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
