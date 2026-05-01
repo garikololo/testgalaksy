@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class BusController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin,manager');
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -38,4 +38,14 @@ class Driver extends Model
     {
         return $this->belongsToMany(Bus::class, 'drivers_to_buses');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function busesUser()
+    {
+        return $this->belongsToMany(Bus::class, 'drivers_to_buses');
+    }
 }

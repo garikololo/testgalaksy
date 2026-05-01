@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Driver;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,11 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:driver');
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -56,5 +62,12 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function profile()
+    {
+        $driver = Driver::first(); // auth()->user()->driver;
+
+        return view('drivers.profile', compact('driver'));
     }
 }

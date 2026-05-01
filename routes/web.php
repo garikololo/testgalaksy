@@ -14,31 +14,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('brands', \App\Http\Controllers\BrandController::class);
+    Route::resource('drivers', \App\Http\Controllers\DriverController::class);
+    Route::resource('buses', \App\Http\Controllers\BusController::class);
+
+    Route::post('/buses/{bus}/attach-driver', [\App\Http\Controllers\BusController::class, 'attachDriver'])
+        ->name('buses.attachDriver');
+
+    Route::delete('/buses/{bus}/detach-driver', [\App\Http\Controllers\BusController::class, 'detachDriver'])
+        ->name('buses.detachDriver');
+
+    Route::get('/drivers-olds', [\App\Http\Controllers\DriverController::class, 'olds'])
+        ->name('drivers.olds');
+
+    Route::middleware('can:admin')->group(function () {
+        Route::get('/settings', [\App\Http\Controllers\SettingsController::class, 'edit'])->name('settings.edit');
+        Route::post('/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
+    });
+
 });
 
-Route::resource('brands', \App\Http\Controllers\BrandController::class);
-Route::resource('drivers', \App\Http\Controllers\DriverController::class);
-Route::resource('buses', \App\Http\Controllers\BusController::class);
+Route::middleware(['auth', 'role:admin,manager'])->group(function () {
+    Route::resource('drivers', \App\Http\Controllers\DriverController::class);
+    Route::resource('buses', \App\Http\Controllers\BusController::class);
+});
 
-Route::post('/buses/{bus}/attach-driver', [\App\Http\Controllers\BusController::class, 'attachDriver'])
-    ->name('buses.attachDriver');
-
-Route::delete('/buses/{bus}/detach-driver', [\App\Http\Controllers\BusController::class, 'detachDriver'])
-    ->name('buses.detachDriver');
-
-Route::get('/drivers-olds', [\App\Http\Controllers\DriverController::class, 'olds'])
-    ->name('drivers.olds');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth', 'role:driver'])->group(function () {
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'profile'])
+        ->name('profile');
 });
 
 require __DIR__.'/auth.php';

@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class DriverController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('role:admin,manager');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +20,10 @@ class DriverController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role === 'driver') {
+            return redirect()->route('drivers.profile');
+        }
+
         $drivers = Driver::all();
 
         return view('drivers.index', compact('drivers'));

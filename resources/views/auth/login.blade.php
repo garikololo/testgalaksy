@@ -2,6 +2,11 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <h1>{{ $settings->name ?? 'АТП' }}</h1>
+    @if(!empty($settings->logo))
+        <img src="{{ asset('storage/'.$settings->logo) }}" width="120" class="mt-2">
+    @endif
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
