@@ -14,11 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::post('/request-driver', [\App\Http\Controllers\HomeController::class, 'store'])
+    ->name('driver.request.store');
+
+
 Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('drivers/request', [\App\Http\Controllers\DriverController::class, 'request'])
+        ->name('driver.request.index')
+        ->middleware(['auth', 'role:admin,manager']);
+
     Route::resource('brands', \App\Http\Controllers\BrandController::class);
     Route::resource('drivers', \App\Http\Controllers\DriverController::class);
     Route::resource('buses', \App\Http\Controllers\BusController::class);
@@ -40,6 +50,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin,manager'])->group(function () {
+    Route::get('drivers/request', [\App\Http\Controllers\DriverController::class, 'request'])
+        ->name('driver.request.index')
+        ->middleware(['auth', 'role:admin,manager']);
     Route::resource('drivers', \App\Http\Controllers\DriverController::class);
     Route::resource('buses', \App\Http\Controllers\BusController::class);
 });

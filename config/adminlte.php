@@ -334,6 +334,12 @@ return [
             'can'  => 'manager-or-admin',
         ],
         [
+            'text' => 'заявки на водії',
+            'url' => 'drivers/request',
+            'icon' => 'far fa-fw fa-file',
+            'can'  => 'manager-or-admin',
+        ],
+        [
             'text' => 'старі водії',
             'url' => 'drivers-olds',
             'icon' => 'far fa-fw fa-file',

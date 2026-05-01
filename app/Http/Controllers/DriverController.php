@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendDriverRemoveEmail;
 use App\Models\Driver;
+use App\Models\DriverRequest;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -20,13 +21,16 @@ class DriverController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role === 'driver') {
-            return redirect()->route('drivers.profile');
-        }
-
         $drivers = Driver::all();
 
         return view('drivers.index', compact('drivers'));
+    }
+
+    public function request()
+    {
+        $drivers = DriverRequest::all();
+
+        return view('drivers.request', compact('drivers'));
     }
 
     /**

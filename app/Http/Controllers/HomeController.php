@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DriverRequest;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+
     }
 
     /**
@@ -24,5 +25,18 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'first_name' => 'required|string',
+            'last_name'  => 'required|string',
+            'birth_date' => 'required|date',
+        ]);
+
+        DriverRequest::create($data);
+
+        return back()->with('success', 'Заявку відправлено');
     }
 }
